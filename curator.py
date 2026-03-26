@@ -264,7 +264,7 @@ def fetch_feed(url: str) -> List[FeedItem]:
                 published=published,
                 source_title=source_title,
                 score=score,
-                uid=item_uid(title, link, summary),
+                uid=None,
             )
         )
 
