@@ -57,7 +57,8 @@ crontab -e
 Example:
 
 */30 * * * * /home/user/rss-curator/run_curator.sh
-🌐 Serving the Feed
+
+# Serving the Feed
 
 The generated RSS file is served via nginx:
 
