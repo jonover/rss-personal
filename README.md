@@ -6,11 +6,11 @@ A self-hosted RSS aggregation and curation pipeline that filters, scores, and su
 
 This project combines multiple RSS sources into a single curated feed by:
 
-Fetching articles from multiple RSS feeds
-Cleaning and normalizing content
-Scoring entries based on relevance
-Generating concise summaries
-Publishing a custom RSS feed for consumption in any reader
+- Fetching articles from multiple RSS feeds
+- Cleaning and normalizing content
+- Scoring entries based on relevance
+- Generating concise summaries
+- Publishing a custom RSS feed for consumption in any reader
 
 It is designed for users who want full control over their information flow without relying on algorithmic feeds or third-party services.
 
@@ -46,7 +46,7 @@ cd rss-curator
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-3. Configure environment
+4. Configure environment
 
 Create a .env file:
 
