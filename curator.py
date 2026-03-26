@@ -209,33 +209,33 @@ def fetch_feed(url: str) -> List[FeedItem]:
     items: List[FeedItem] = []
 
     for entry in parsed.entries:
-    title = clean_text(entry.get("title", "Untitled"))
-    link = entry.get("link", "").strip()
-    summary = clean_text(
-        entry.get("summary", "") or entry.get("description", "")
-    )
+        title = clean_text(entry.get("title", "Untitled"))
+        link = entry.get("link", "").strip()
+        summary = clean_text(
+            entry.get("summary", "") or entry.get("description", "")
+        )
     published = parse_date(entry)
 
-    # Remove duplicated title in summary
-    if summary.lower().startswith(title.lower()):
-        summary = summary[len(title):].strip(" :-–—")
+        # Remove duplicated title in summary
+        if summary.lower().startswith(title.lower()):
+            summary = summary[len(title):].strip(" :-–—")
 
-    if not link:
-        continue
+        if not link:
+            continue
 
-    score = score_text(title, summary)
+        score = score_text(title, summary)
 
-    items.append(
-        FeedItem(
-            title=title,
-            link=link,
-            summary=summary,
-            published=published,
-            source_title=source_title,
-            score=score,
-            uid=item_uid(title, link),
+        items.append(
+            FeedItem(
+                title=title,
+                link=link,
+                summary=summary,
+                published=published,
+                source_title=source_title,
+                score=score,
+                uid=item_uid(title, link),
+            )
         )
-    )
 
     return items
 
