@@ -15,11 +15,12 @@ Publishing a custom RSS feed for consumption in any reader
 It is designed for users who want full control over their information flow without relying on algorithmic feeds or third-party services.
 
 # Architecture
-RSS Sources → Python Pipeline → Curated Feed → FreshRSS → Mobile Client
-Python script: ingestion, scoring, summarization
-Nginx: serves generated RSS feed
-FreshRSS: backend aggregation + API
-iOS client (e.g., Unread): consumption layer
+- RSS Sources → Python Pipeline → Curated Feed → FreshRSS → Mobile Client
+- Python script: ingestion, scoring, summarization
+- Nginx: serves generated RSS feed
+- FreshRSS: backend aggregation + API
+- iOS client (e.g., Unread): consumption layer
+
 ## Features
 - Multi-source RSS aggregation
 - HTML stripping and text normalization
