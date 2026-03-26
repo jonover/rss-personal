@@ -118,8 +118,8 @@ class FeedItem:
 
 def clean_text(text: str) -> str:
     text = html.unescape(text or "")
-    text = re.sub(r"<br\s*/?>", "\n", text, flags=re.IGNORECASE)
-    text = re.sub(r"</p>", "\n\n", text, flags=re.IGNORECASE)
+    text = re.sub(r"<br\s*/?>", " ", text, flags=re.IGNORECASE)
+    text = re.sub(r"</p>", " ", text, flags=re.IGNORECASE)
     text = re.sub(r"<[^>]+>", " ", text)
     text = re.sub(r"\s+", " ", text).strip()
     return text
@@ -254,6 +254,7 @@ def build_feed(items: List[FeedItem], output_file: str = "curated_feed.xml") -> 
     fg.link(href="http://localhost/curated_feed.xml", rel="self")
     fg.description("A personal curated RSS feed generated from multiple sources.")
     fg.language("en")
+    fg.lastBuildDate(datetime.now(timezone.utc))
 
     for item in items:
         fe = fg.add_entry(order="append")
@@ -264,7 +265,7 @@ def build_feed(items: List[FeedItem], output_file: str = "curated_feed.xml") -> 
         description = (
             f"Source: {item.source_title}\n"
             f"Score: {item.score}\n\n"
-            f"{item.summary[:400]}"
+            f"{item.summary[:400].strip()}"
         )
         fe.description(description)
 
