@@ -18,6 +18,7 @@ Output:
 from __future__ import annotations
 
 import hashlib
+import os
 import html
 import re
 import time
@@ -29,6 +30,9 @@ from typing import Iterable, List, Optional
 import feedparser
 import requests
 from feedgen.feed import FeedGenerator
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 # ----------------------------
@@ -95,6 +99,8 @@ NEGATIVE_KEYWORDS = {
 MAX_ITEMS = 30
 REQUEST_TIMEOUT = 15
 USER_AGENT = "JonathanCurator/1.0 (+personal RSS curation script)"
+BASE_URL = os.getenv("RSS_BASE_URL", "http://192.168.1.42:8081/rss/curated_feed.xml")
+FEED_VERSION = "v3"
 
 
 # ----------------------------
@@ -127,15 +133,25 @@ def clean_text(text: str) -> str:
 def summarize(text: str) -> str:
     text = clean_text(text)
 
-    # Remove common noisy prefixes
-    text = re.sub(r"^(arXiv:\S+\s+.*?Abstract:\s*)", "", text, flags=re.IGNORECASE)
+    # Strip noisy prefixes often found in arXiv / Reddit / security feeds
+    patterns = [
+        r"^\[.*?\]\s*",
+        r"^arXiv:\S+\s+",
+        r"^Announce Type:\s*new Abstract:\s*",
+        r"^Abstract:\s*",
+        r"^Resumo técnico:\s*",
+    ]
+    for pattern in patterns:
+        text = re.sub(pattern, "", text, flags=re.IGNORECASE)
 
-    # Cut to first sentence if possible
-    if "." in text:
-        text = text.split(".")[0] + "."
+    # If there is a colon-heavy metadata blob at the front, cut after it
+    text = re.sub(r"^(?:[A-ZÀ-Ž0-9 _/-]+:\s*){2,}", "", text)
 
-    # Final trim
-    return text[:200].strip()
+    # Keep only the first sentence or two
+    sentences = re.split(r"(?<=[.!?])\s+", text)
+    summary = " ".join(sentences[:2]).strip()
+
+    return summary[:220]
 
 
 def parse_date(entry) -> Optional[datetime]:
@@ -264,7 +280,7 @@ def sort_items(items: List[FeedItem]) -> List[FeedItem]:
 def build_feed(items: List[FeedItem], output_file: str = "curated_feed.xml") -> None:
     fg = FeedGenerator()
     fg.title("Jonathan's Curated Feed")
-    fg.link(href="http://localhost:8081/rss/curated_feed.xml", rel="self")
+    fg.link(href=BASE_URL, rel="self")
     fg.description("A personal curated RSS feed generated from multiple sources.")
     fg.language("en")
     fg.lastBuildDate(datetime.now(timezone.utc))
@@ -272,14 +288,14 @@ def build_feed(items: List[FeedItem], output_file: str = "curated_feed.xml") -> 
     for item in items:
         fe = fg.add_entry(order="append")
 
-        fe.id(item.uid)
-        fe.guid(item.uid, permalink=False)
+        summary = summarize(item.summary)
+        guid = item_uid(item.title, item.link, summary)
+
+        fe.id(guid)
+        fe.guid(guid, permalink=False)
         fe.title(item.title)
         fe.link(href=item.link)
-
-        summary = summarize(item.summary)
         fe.description(summary)
-
         fe.pubDate(datetime.now(timezone.utc))
 
     fg.rss_file(output_file, pretty=True)
