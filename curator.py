@@ -118,6 +118,8 @@ class FeedItem:
 
 def clean_text(text: str) -> str:
     text = html.unescape(text or "")
+    text = re.sub(r"<br\s*/?>", "\n", text, flags=re.IGNORECASE)
+    text = re.sub(r"</p>", "\n\n", text, flags=re.IGNORECASE)
     text = re.sub(r"<[^>]+>", " ", text)
     text = re.sub(r"\s+", " ", text).strip()
     return text
@@ -256,9 +258,9 @@ def build_feed(items: List[FeedItem], output_file: str = "curated_feed.xml") -> 
         fe.link(href=item.link)
 
         description = (
-            f"<p><strong>Source:</strong> {html.escape(item.source_title)}</p>"
-            f"<p><strong>Score:</strong> {item.score}</p>"
-            f"<p>{html.escape(item.summary[:800])}</p>"
+            f"Source: {item.source_title}\n"
+            f"Score: {item.score}\n\n"
+            f"{item.summary[:400]}"
         )
         fe.description(description)
 
