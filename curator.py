@@ -183,8 +183,10 @@ def parse_date(entry) -> Optional[datetime]:
     return None
 
 
-def item_uid(title: str, link: str) -> str:
-    digest = hashlib.sha256(f"{title}|{link}".encode("utf-8")).hexdigest()
+def item_uid(title: str, link: str, summary: str) -> str:
+    digest = hashlib.sha256(
+        f"{title}|{link}|{summary}".encode("utf-8")
+    ).hexdigest()
     return digest
 
 
