@@ -15,6 +15,7 @@ This project combines multiple RSS sources into a single curated feed by:
 It is designed for users who want full control over their information flow without relying on algorithmic feeds or third-party services.
 
 # Architecture
+
 - RSS Sources → Python Pipeline → Curated Feed → FreshRSS → Mobile Client
 - Python script: ingestion, scoring, summarization
 - Nginx: serves generated RSS feed
@@ -22,6 +23,7 @@ It is designed for users who want full control over their information flow witho
 - iOS client (e.g., Unread): consumption layer
 
 ## Features
+
 - Multi-source RSS aggregation
 - HTML stripping and text normalization
 - Keyword-based scoring system
@@ -32,85 +34,96 @@ It is designed for users who want full control over their information flow witho
 
 # Project Structure
 
-├── curate_rss.py        
-├── run_curator.sh       
-├── .env                 
+```
+.
+├── curate_rss.py
+├── run_curator.sh
+├── .env
 ├── requirements.txt
 └── README.md
+```
 
 # Setup
-1. Clone the repo
 
-'''
+### 1. Clone the repo
+
+```bash
 git clone https://github.com/yourusername/rss-curator.git
 cd rss-curator
-'''
+```
 
-3. Create virtual environment
+### 2. Create virtual environment
 
-'''
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-'''
+```
 
-5. Configure environment
+### 3. Configure environment
 
-Create a .env file:
+Create a `.env` file:
 
-'''
+```text
 RSS_BASE_URL=http://YOUR_SERVER_IP:8081/rss/curated_feed.xml
-'''
+```
 
-4. Run the script
+### 4. Run the script
 
-'''
+```bash
 python curate_rss.py
-'''
-6. (Optional) Automate with cron
+```
 
-'''
+### 5. (Optional) Automate with cron
+
+```bash
 crontab -e
-'''
+```
 
 Example:
 
-'''
+```cron
 */30 * * * * /home/user/rss-curator/run_curator.sh
-'''
+```
 
 # Serving the Feed
 
 The generated RSS file is served via nginx:
 
-'''
+```text
 /var/www/rss/curated_feed.xml
-'''
+```
 
 Accessible at:
 
-'''
+```text
 http://YOUR_SERVER_IP:8081/rss/curated_feed.xml
-'''
+```
 
 # Client Usage
 
-The curated feed can be used in any RSS reader.
+The curated feed can be used in any RSS reader:
+
+```text
+http://YOUR_SERVER_IP:8081/rss/curated_feed.xml
+```
 
 For full aggregation via FreshRSS:
 
-'''
+```text
 http://YOUR_SERVER_IP:8080/i/?a=rss&user=USERNAME&token=TOKEN
-'''
+```
 
 Or connect via API (Fever / Google Reader compatible clients).
 
 # Security Notes
-- .env is excluded from version control
+
+- `.env` is excluded from version control
 - Avoid exposing public IPs or tokens in the repository
 - Use HTTPS if exposing outside your LAN
 
 # Future Improvements
+
 - Category-based feeds (security, systems, research, etc.)
 - Advanced ranking (source weighting, recency decay)
 - Deduplication across sources
@@ -118,6 +131,7 @@ Or connect via API (Fever / Google Reader compatible clients).
 - Web dashboard for tuning filters
 
 # Acknowledgements
+
 - FreshRSS
 - feedparser
 - feedgen
@@ -126,4 +140,4 @@ Or connect via API (Fever / Google Reader compatible clients).
 
 Modern content feeds are noisy and algorithm-driven. This project aims to:
 
-Put control of information back in the hands of the user.
+> Put control of information back in the hands of the user.
