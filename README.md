@@ -29,7 +29,7 @@ iOS client (e.g., Unread): consumption layer
 ## Cron-based automation
 ## Compatible with standard RSS readers and APIs
 ## Project Structure
-.
+
 ├── curate_rss.py        # Main pipeline script
 ├── run_curator.sh       # Wrapper script (cron-friendly)
 ├── .env                 # Environment config (not committed)
