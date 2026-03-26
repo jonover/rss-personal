@@ -48,7 +48,7 @@ It is designed for users who want full control over their information flow witho
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/yourusername/rss-curator.git
+git clone https://github.com/jonover/rss-curator.git
 cd rss-curator
 ```
 
