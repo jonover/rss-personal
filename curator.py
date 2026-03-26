@@ -214,7 +214,7 @@ def fetch_feed(url: str) -> List[FeedItem]:
         summary = clean_text(
             entry.get("summary", "") or entry.get("description", "")
         )
-    published = parse_date(entry)
+        published = parse_date(entry)
 
         # Remove duplicated title in summary
         if summary.lower().startswith(title.lower()):
