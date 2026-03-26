@@ -40,34 +40,45 @@ It is designed for users who want full control over their information flow witho
 
 # Setup
 1. Clone the repo
+
 '''
 git clone https://github.com/yourusername/rss-curator.git
 cd rss-curator
 '''
+
 3. Create virtual environment
+
 '''
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 '''
-4. Configure environment
+
+5. Configure environment
 
 Create a .env file:
+
 '''
 RSS_BASE_URL=http://YOUR_SERVER_IP:8081/rss/curated_feed.xml
 '''
+
 4. Run the script
+
 '''
 python curate_rss.py
 '''
-5. (Optional) Automate with cron
+6. (Optional) Automate with cron
+
 '''
 crontab -e
 '''
+
 Example:
+
 '''
 */30 * * * * /home/user/rss-curator/run_curator.sh
 '''
+
 # Serving the Feed
 
 The generated RSS file is served via nginx:
@@ -75,18 +86,23 @@ The generated RSS file is served via nginx:
 '''
 /var/www/rss/curated_feed.xml
 '''
+
 Accessible at:
+
 '''
 http://YOUR_SERVER_IP:8081/rss/curated_feed.xml
 '''
+
 # Client Usage
 
 The curated feed can be used in any RSS reader.
 
 For full aggregation via FreshRSS:
+
 '''
 http://YOUR_SERVER_IP:8080/i/?a=rss&user=USERNAME&token=TOKEN
 '''
+
 Or connect via API (Fever / Google Reader compatible clients).
 
 # Security Notes
