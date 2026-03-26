@@ -124,6 +124,19 @@ def clean_text(text: str) -> str:
     text = re.sub(r"\s+", " ", text).strip()
     return text
 
+def summarize(text: str) -> str:
+    text = clean_text(text)
+
+    # Remove common noisy prefixes
+    text = re.sub(r"^(arXiv:\S+\s+.*?Abstract:\s*)", "", text, flags=re.IGNORECASE)
+
+    # Cut to first sentence if possible
+    if "." in text:
+        text = text.split(".")[0] + "."
+
+    # Final trim
+    return text[:200].strip()
+
 
 def parse_date(entry) -> Optional[datetime]:
     candidates = [
@@ -254,7 +267,7 @@ def build_feed(items: List[FeedItem], output_file: str = "curated_feed.xml") -> 
     fg.link(href="http://YOUR_SERVER_IP:8081/rss/curated_feed.xml", rel="self")
     fg.description("A personal curated RSS feed generated from multiple sources.")
     fg.language("en")
-    fg.lastBuildDate(datetime.now(timezone.utc))
+    fe.pubDate(datetime.now(timezone.utc))
 
     for item in items:
         fe = fg.add_entry(order="append")
@@ -271,6 +284,8 @@ def build_feed(items: List[FeedItem], output_file: str = "curated_feed.xml") -> 
         fe.pubDate(datetime.now(timezone.utc))
 
     fg.rss_file(output_file, pretty=True)
+    summary = summarize(item.summary)
+    fe.description(summary)
 
 
 def main() -> None:
