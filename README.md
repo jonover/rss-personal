@@ -21,14 +21,14 @@ Nginx: serves generated RSS feed
 FreshRSS: backend aggregation + API
 iOS client (e.g., Unread): consumption layer
 ## Features
-## Multi-source RSS aggregation
-## HTML stripping and text normalization
-## Keyword-based scoring system
-## Automatic summarization + truncation
-## Custom RSS feed generation
-## Cron-based automation
-## Compatible with standard RSS readers and APIs
-## Project Structure
+- Multi-source RSS aggregation
+- HTML stripping and text normalization
+- Keyword-based scoring system
+- Automatic summarization + truncation
+- Custom RSS feed generation
+- Cron-based automation
+- Compatible with standard RSS readers and APIs
+- Project Structure
 
 ├── curate_rss.py        
 ├── run_curator.sh       
