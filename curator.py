@@ -133,25 +133,22 @@ def clean_text(text: str) -> str:
 def summarize(text: str) -> str:
     text = clean_text(text)
 
-    # Strip noisy prefixes often found in arXiv / Reddit / security feeds
     patterns = [
         r"^\[.*?\]\s*",
         r"^arXiv:\S+\s+",
-        r"^Announce Type:\s*new Abstract:\s*",
+        r"^Announce Type:\s*[^:]*:\s*",
         r"^Abstract:\s*",
-        r"^Resumo técnico:\s*",
     ]
     for pattern in patterns:
         text = re.sub(pattern, "", text, flags=re.IGNORECASE)
 
-    # If there is a colon-heavy metadata blob at the front, cut after it
-    text = re.sub(r"^(?:[A-ZÀ-Ž0-9 _/-]+:\s*){2,}", "", text)
-
-    # Keep only the first sentence or two
     sentences = re.split(r"(?<=[.!?])\s+", text)
     summary = " ".join(sentences[:2]).strip()
 
-    return summary[:220]
+    if len(summary) > 240:
+        summary = summary[:237].rsplit(" ", 1)[0] + "..."
+
+    return summary
 
 
 def parse_date(entry) -> Optional[datetime]:
