@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-curate_rss.py
+curator.py
 
 Fetch multiple RSS/Atom feeds, score entries by your interests,
 deduplicate them, and generate a curated RSS feed.
@@ -9,7 +9,7 @@ Install:
     pip install feedparser feedgen requests
 
 Run:
-    python curate_rss.py
+    python curator.py
 
 Output:
     curated_feed.xml
