@@ -258,17 +258,17 @@ def build_feed(items: List[FeedItem], output_file: str = "curated_feed.xml") -> 
 
     for item in items:
         fe = fg.add_entry(order="append")
+
         fe.id(item.uid)
         fe.guid(item.uid, permalink=False)
+
         fe.title(item.title)
         fe.link(href=item.link)
 
-        summary = item.summary[:280].strip()
-
+        summary = summarize(item.summary)
         fe.description(summary)
 
-        if item.published:
-            fe.pubDate(item.published)
+        fe.pubDate(datetime.now(timezone.utc))
 
     fg.rss_file(output_file, pretty=True)
 
