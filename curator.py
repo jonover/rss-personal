@@ -210,10 +210,12 @@ def fetch_feed(url: str) -> List[FeedItem]:
 
     for entry in parsed.entries:
         title = clean_text(entry.get("title", "Untitled"))
-        link = entry.get("link", "").strip()
         summary = clean_text(
             entry.get("summary", "") or entry.get("description", "")
         )
+        # Remove duplicated title in summary (common in feeds)
+        if summary.lower().startswith(title.lower()):
+            summary = summary[len(title):].strip(" :-–—")
         published = parse_date(entry)
 
         if not link:
