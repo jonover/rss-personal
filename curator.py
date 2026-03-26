@@ -264,17 +264,16 @@ def sort_items(items: List[FeedItem]) -> List[FeedItem]:
 def build_feed(items: List[FeedItem], output_file: str = "curated_feed.xml") -> None:
     fg = FeedGenerator()
     fg.title("Jonathan's Curated Feed")
-    fg.link(href="http://YOUR_SERVER_IP:8081/rss/curated_feed.xml", rel="self")
+    fg.link(href="http://localhost:8081/rss/curated_feed.xml", rel="self")
     fg.description("A personal curated RSS feed generated from multiple sources.")
     fg.language("en")
-    fe.pubDate(datetime.now(timezone.utc))
+    fg.lastBuildDate(datetime.now(timezone.utc))
 
     for item in items:
         fe = fg.add_entry(order="append")
 
         fe.id(item.uid)
         fe.guid(item.uid, permalink=False)
-
         fe.title(item.title)
         fe.link(href=item.link)
 
@@ -284,8 +283,6 @@ def build_feed(items: List[FeedItem], output_file: str = "curated_feed.xml") -> 
         fe.pubDate(datetime.now(timezone.utc))
 
     fg.rss_file(output_file, pretty=True)
-    summary = summarize(item.summary)
-    fe.description(summary)
 
 
 def main() -> None:
