@@ -1,0 +1,4 @@
+feedparser
+feedgen
+python-dotenv
+requests
