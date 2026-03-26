@@ -36,7 +36,7 @@ It is designed for users who want full control over their information flow witho
 
 ```
 .
-├── curate_rss.py
+├── curator.py
 ├── run_curator.sh
 ├── .env
 ├── requirements.txt
